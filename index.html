@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCEOU Mechanical Attendance</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      margin: 0;
+      padding: 30px 15px;
+      color: #1e293b;
+    }
+    .container {
+      max-width: 450px;
+      margin: 40px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px #0001;
+    }
+    h1 { text-align: center; color: #123c69; }
+    p { text-align: center; color: #64748b; }
+    label { display: block; margin-top: 16px; }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      margin-top: 7px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+    }
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 12px;
+      background: #123c69;
+      color: white;
+      border: 0;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+    #message { margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>UCEOU</h1>
+    <p>Mechanical Engineering Attendance Portal</p>
+
+    <form id="loginForm">
+      <label for="email">Email address</label>
+      <input id="email" type="email" required
+             placeholder="Enter your email">
+
+      <label for="password">Password</label>
+      <input id="password" type="password" required
+             placeholder="Enter your password">
+
+      <button type="submit">Sign In</button>
+    </form>
+
+    <p id="message" role="status"></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword
+    } from
+      "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    // Add your Firebase web app configuration here.
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "uceou-mechanical-attendance",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("loginForm").addEventListener(
+      "submit", async (event) => {
+        event.preventDefault();
+        const message = document.getElementById("message");
+        message.textContent = "Signing in...";
+
+        try {
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          await signInWithEmailAndPassword(auth, email, password);
+          message.textContent = "Login successful!";
+        } catch (error) {
+          message.textContent = "Login failed: " + error.message;
+        }
+      }
+    );
+  </script>
+</body>
+</html>
